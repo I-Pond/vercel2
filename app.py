@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import joblib
 from datetime import datetime
+import numpy as np
 
 
 app = FastAPI()
@@ -23,15 +24,29 @@ async def home():
 @app.post('/weekly/')
 async def week1(item:model_input):
     datetime_week = datetime.now().strftime("%Y-%m-%d")
+    input = np.array([[item.ph,item.temperature,item.turbidity]])
+    prediction = model.predict(input)[0]
+    if prediction == 0 : 
+        result = 'Bersih'
+    else:
+        result = 'Keruh'
     return {
-        'week':item,
+        'input':{'week':item},
+        'result':result,
         'tanggal':datetime_week
     }
 @app.post('/month/')
 async def month(item:model_input):
     datetime_month = datetime.now().strftime("%Y-%m-%d")
+    input = np.array([[item.ph,item.temperature,item.turbidity]])
+    prediction = model.predict(input)[0]
+    if prediction == 0 : 
+        result = 'Bersih'
+    else:
+        result = 'Keruh'
     return {
-        'month':item,
+        'input':{'month':item},
+        'result':result,
         'tanggal':datetime_month
     }
 @app.post('/predict/{ph}/{temperature}/{turbidity}')
