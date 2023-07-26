@@ -19,7 +19,7 @@ model = joblib.load('modelss5.pkl')
 
 @app.get('/')
 async def home():
-    return {'Hallo Manis, Fast Api nya sudah'}
+    return {'Hallo Fast APi sudah benar'}
 
 @app.post('/weekly/')
 async def week1(item:model_input):
